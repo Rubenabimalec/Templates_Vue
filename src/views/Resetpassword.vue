@@ -32,6 +32,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
+import { supabase } from '@/lib/supabase'
 
 const password = ref('')
 const confirmPassword = ref('')
@@ -61,6 +62,7 @@ async function handleUpdate() {
   if (result.success) {
     message.value = 'Contraseña actualizada correctamente. Redirigiendo...'
     // Esperamos 2 segundos para que el usuario lea el mensaje y redirigimos al login
+    await supabase.auth.signOut() // Aseguramos que el usuario se desloguee completamente
     setTimeout(() => {
       router.push('/login')
     }, 2000)
